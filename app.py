@@ -40,6 +40,21 @@ def get_user():
 def health():
     return {"status": "ok"}
 
+import subprocess
+
+@app.route("/ping")
+def ping():
+    host = request.args.get("host", "127.0.0.1")
+    # Command injection vulnerability
+    output = subprocess.check_output(f"ping -c 1 {host}", shell=True)
+    return output
+
+@app.route("/calc")
+def calc():
+    expr = request.args.get("expr", "1+1")
+    return str(eval(expr))  # Insecure eval
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
