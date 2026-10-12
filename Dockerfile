@@ -1,10 +1,11 @@
-FROM python:latest
+FROM python:3.7-slim-buster
 
 WORKDIR /app
 COPY requirements.txt .
-RUN apt-get update && apt-get install -y curl
-RUN pip install -r requirements.txt
-ADD app.py /app/app.py
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
 
+# INTENTIONAL: no USER instruction -> container runs as root.
+# Hadolint (DL3002) will flag this, and Kyverno will block it at deploy time.
 EXPOSE 5000
 CMD ["python", "app.py"]
