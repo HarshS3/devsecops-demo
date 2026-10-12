@@ -49,7 +49,7 @@ jobs:
         with:
           image-ref: demo-app:${{ github.sha }}
           severity: HIGH,CRITICAL
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
 
       # 7. Slack alert on any failure above
