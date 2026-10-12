@@ -2,6 +2,7 @@
 Intentionally vulnerable demo app for a DevSecOps CI/CD talk.
 DO NOT deploy this anywhere real. It exists to be caught by scanners.
 """
+# pyrefly: ignore [missing-import]
 from flask import Flask, request
 import sqlite3
 import os
@@ -29,7 +30,7 @@ def home():
 def get_user():
     name = request.args.get("name", "")
     conn = get_db()
-    query = "SELECT id, username, role FROM users WHERE username = '" + name + "'"  # nosec - intentional for demo
+    query = "SELECT id, username, role FROM users WHERE username = '" + name + "'"  
     cursor = conn.execute(query)
     rows = cursor.fetchall()
     return {"results": rows}
