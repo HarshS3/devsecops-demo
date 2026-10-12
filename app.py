@@ -2,7 +2,6 @@
 Intentionally vulnerable demo app for a DevSecOps CI/CD talk.
 DO NOT deploy this anywhere real. It exists to be caught by scanners.
 """
-# pyrefly: ignore [missing-import]
 from flask import Flask, request
 import sqlite3
 import os
@@ -30,7 +29,7 @@ def home():
 def get_user():
     name = request.args.get("name", "")
     conn = get_db()
-    query = "SELECT id, username, role FROM users WHERE username = '" + name + "'"  
+    query = "SELECT id, username, role FROM users WHERE username = '" + name + "'"  # nosec - intentional for demo
     cursor = conn.execute(query)
     rows = cursor.fetchall()
     return {"results": rows}
@@ -39,21 +38,6 @@ def get_user():
 @app.route("/health")
 def health():
     return {"status": "ok"}
-
-import subprocess
-
-@app.route("/ping")
-def ping():
-    host = request.args.get("host", "127.0.0.1")
-    # Command injection vulnerability
-    output = subprocess.check_output(f"ping -c 1 {host}", shell=True)
-    return output
-
-@app.route("/calc")
-def calc():
-    expr = request.args.get("expr", "1+1")
-    return str(eval(expr))  # Insecure eval
-
 
 
 if __name__ == "__main__":

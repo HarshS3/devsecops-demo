@@ -20,9 +20,9 @@ jobs:
 
       # 2. SAST
       - name: Semgrep - static analysis
-        run: |
-          pip install --upgrade semgrep
-          semgrep scan --config p/ci --error
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/ci
 
       # 3. Dependency / CVE scanning (source)
       - name: Trivy - filesystem scan
